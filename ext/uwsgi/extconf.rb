@@ -1,10 +1,10 @@
 require 'net/http'
+require 'uri'
 
-Net::HTTP.start("uwsgi.it", :use_ssl=>true) do |http|
-  resp = http.get("/install")
-  open("install.sh", "wb") do |file|
-      file.write(resp.body)
-  end
+uri = URI.parse("https://raw.githubusercontent.com/unbit/uwsgi/master/install.sh")
+resp= Net::HTTP.get_response(uri)
+open("install.sh", "wb") do |file|
+    file.write(resp.body)
 end
 
 major,minor = RUBY_VERSION.split('.')
